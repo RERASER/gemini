@@ -9,6 +9,20 @@
     <UserControl.ContextMenu>
         <ContextMenu>
             <MenuItem Header="清理" cal:Message.Attach="Clear()"></MenuItem>
+            <MenuItem cal:Message.Attach="ToggleAutoScrollEnd()">
+                <MenuItem.Style>
+                    <Style TargetType="MenuItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding AutoScrollEnd}" Value="False">
+                                <Setter Property="Header" Value="自动滑动"></Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding AutoScrollEnd}" Value="True">
+                                <Setter Property="Header" Value="取消自动滑动"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </MenuItem.Style>
+            </MenuItem>
         </ContextMenu>
     </UserControl.ContextMenu>
 	<TextBox x:Name="outputText"

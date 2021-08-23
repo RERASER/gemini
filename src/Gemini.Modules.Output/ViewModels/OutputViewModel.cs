@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
@@ -16,8 +16,18 @@ namespace Gemini.Modules.Output.ViewModels
         private readonly StringBuilder _stringBuilder;
 		private readonly OutputWriter _writer;
 		private IOutputView _view;
+        
+        public bool AutoScrollEnd
+        {
+            get { return _view.AutoScrollEnd; }
+            set
+            {
+                _view.AutoScrollEnd = value;
+                NotifyOfPropertyChange(() => AutoScrollEnd);
+            }
+        }
 
-		public override PaneLocation PreferredLocation
+        public override PaneLocation PreferredLocation
 		{
 			get { return PaneLocation.Bottom; }
 		}
@@ -34,7 +44,12 @@ namespace Gemini.Modules.Output.ViewModels
 			_writer = new OutputWriter(this);
 		}
 
-		public void Clear()
+        public void ToggleAutoScrollEnd()
+        {
+            AutoScrollEnd = !AutoScrollEnd;
+        }
+
+        public void Clear()
 		{
 			if (_view != null)
 				Execute.OnUIThread(() => _view.Clear());
