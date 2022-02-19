@@ -94,21 +94,27 @@ namespace Gemini.Framework
 
 	    async Task ICommandHandler<SaveFileCommandDefinition>.Run(Command command)
 	    {
-	        var persistedDocument = this as IPersistedDocument;
-	        if (persistedDocument == null)
-	            return;
+            await SaveInternal();
+	    }
 
-	        // If file has never been saved, show Save As dialog.
-	        if (persistedDocument.IsNew)
-	        {
-	            await DoSaveAs(persistedDocument);
-	            return;
-	        }
+        internal async Task<bool> SaveInternal()
+        {
+            var persistedDocument = this as IPersistedDocument;
+            if (persistedDocument == null)
+                return false;
 
-	        // Save file.
+            // If file has never been saved, show Save As dialog.
+            if (persistedDocument.IsNew)
+            {
+                return await DoSaveAs(persistedDocument);
+            }
+
+            // Save file.
             var filePath = persistedDocument.FilePath;
             await persistedDocument.Save(filePath);
-	    }
+
+            return true;
+        }
 
         void ICommandHandler<SaveFileAsCommandDefinition>.Update(Command command)
         {
@@ -124,7 +130,7 @@ namespace Gemini.Framework
             await DoSaveAs(persistedDocument);
 	    }
 
-	    private static async Task DoSaveAs(IPersistedDocument persistedDocument)
+	    public static async Task<bool> DoSaveAs(IPersistedDocument persistedDocument)
 	    {
             // Show user dialog to choose filename.
             var dialog = new SaveFileDialog();
@@ -142,12 +148,13 @@ namespace Gemini.Framework
             dialog.Filter = filter;
 
             if (dialog.ShowDialog() != true)
-                return;
+                return false;
 
             var filePath = dialog.FileName;
 
             // Save file.
             await persistedDocument.Save(filePath);
+            return true;
 	    }
 	}
 }

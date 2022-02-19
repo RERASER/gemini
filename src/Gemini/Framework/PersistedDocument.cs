@@ -1,6 +1,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Gemini.Framework
 {
@@ -37,10 +38,28 @@ namespace Gemini.Framework
             }
         }
 
-        public override Task<bool> CanCloseAsync(CancellationToken cancellationToken)
+        public override async Task<bool> CanCloseAsync(CancellationToken cancellationToken)
         {
-            // TODO: Show save prompt.
-            return Task.FromResult(!IsDirty);
+            if (IsDirty)
+            {
+                //问问是否保存
+                var result = MessageBox.Show("文档还有没保存的变更,是否立即保存?", "提醒",
+                    MessageBoxButton.YesNoCancel,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.Cancel);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        return await SaveInternal();
+                    case MessageBoxResult.No:
+                        return true; //close directly
+                    default:
+                        return false;
+                }
+            }
+
+            return true;
         }
 
         private void UpdateDisplayName()
