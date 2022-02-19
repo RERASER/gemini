@@ -11,5 +11,17 @@
     <Setting Name="LanguageCode" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="MainWindowRectLeft" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">460</Value>
+    </Setting>
+    <Setting Name="MainWindowRectTop" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">190</Value>
+    </Setting>
+    <Setting Name="MainWindowRectWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="MainWindowRectHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">800</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -1,5 +1,6 @@
 using System.ComponentModel.Composition;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
@@ -34,25 +35,47 @@ namespace Gemini.Modules.MainWindow.ViewModels
             }
         }
 
-        private double _width = 1000.0;
-        public double Width
+        private Rect windowRect = new Rect(new Size(1000, 600));
+
+        public Rect WindowRect => windowRect;
+
+        public double Top
         {
-            get { return _width; }
+            get { return windowRect.Y; }
             set
             {
-                _width = value;
-                NotifyOfPropertyChange(() => Width);
+                windowRect.Y = value;
+                NotifyOfPropertyChange(() => Top);
             }
         }
 
-        private double _height = 800.0;
-        public double Height
+        public double Left
         {
-            get { return _height; }
+            get { return windowRect.X; }
             set
             {
-                _height = value;
+                windowRect.X = value;
+                NotifyOfPropertyChange(() => Left);
+            }
+        }
+
+        public double Height
+        {
+            get { return windowRect.Height; }
+            set
+            {
+                windowRect.Height = value;
                 NotifyOfPropertyChange(() => Height);
+            }
+        }
+
+        public double Width
+        {
+            get { return windowRect.Width; }
+            set
+            {
+                windowRect.Width = value;
+                NotifyOfPropertyChange(() => Width);
             }
         }
 
@@ -92,7 +115,12 @@ namespace Gemini.Modules.MainWindow.ViewModels
 
         protected override void OnViewLoaded(object view)
         {
-            _commandKeyGestureService.BindKeyGestures((UIElement) view);
+            Left = Properties.Settings.Default.MainWindowRectLeft;
+            Top = Properties.Settings.Default.MainWindowRectTop;
+            Width = Properties.Settings.Default.MainWindowRectWidth;
+            Height = Properties.Settings.Default.MainWindowRectHeight;
+
+            _commandKeyGestureService.BindKeyGestures((UIElement)view);
             base.OnViewLoaded(view);
         }
     }

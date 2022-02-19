@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
+using Gemini.Framework;
 using Gemini.Framework.Services;
 
 namespace Gemini
@@ -59,7 +60,7 @@ namespace Gemini
                 {
                     const string fullMethodName =
                         nameof(Gemini) + "." +
-                        nameof(AppBootstrapper)+ "."+
+                        nameof(AppBootstrapper) + "." +
                         nameof(Configure);
 
                     string exceptionMessage =
@@ -197,5 +198,21 @@ namespace Gemini
 
         protected override IEnumerable<Assembly> SelectAssemblies()
             => new[] { Assembly.GetEntryAssembly() };
-    };
+
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            if (IoC.Get<IMainWindow>()?.WindowRect is Rect rect)
+            {
+                //save MainWindow position&size
+                Properties.Settings.Default.MainWindowRectLeft = rect.Left;
+                Properties.Settings.Default.MainWindowRectTop = rect.Top;
+                Properties.Settings.Default.MainWindowRectWidth = rect.Width;
+                Properties.Settings.Default.MainWindowRectHeight = rect.Height;
+
+                Properties.Settings.Default.Save();
+            }
+
+            base.OnExit(sender, e);
+        }
+    }
 }
