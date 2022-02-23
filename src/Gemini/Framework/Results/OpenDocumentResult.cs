@@ -14,7 +14,7 @@ namespace Gemini.Framework.Results
 
 #pragma warning disable 649
         [Import]
-		private readonly IShell _shell;
+        private IShell _shell;
 #pragma warning restore 649
 
         public OpenDocumentResult(IDocument editor)
