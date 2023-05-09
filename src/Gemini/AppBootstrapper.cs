@@ -31,7 +31,7 @@ namespace Gemini
         /// </summary>
         public virtual bool IsPublishSingleFileHandled => false;
 
-        public AppBootstrapper()
+        public AppBootstrapper(bool useApplication = true) : base(useApplication)
         {
             PreInitialize();
             Initialize();
