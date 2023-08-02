@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
+using Gemini.Modules.UndoRedo.UndoAction;
 
 namespace Gemini.Modules.UndoRedo.Services
 {
@@ -34,6 +36,8 @@ namespace Gemini.Modules.UndoRedo.Services
 
         private int? _undoCountLimit = null;
 
+        private Stack<HashSet<IUndoableAction>> _combineStack = new();
+
         public int RedoActionCount => ActionStack.Count - UndoActionCount;
 
         public int? UndoCountLimit
@@ -61,8 +65,28 @@ namespace Gemini.Modules.UndoRedo.Services
             UndoActionCount -= removeCount;
         }
 
+        public void BeginCombineAction()
+        {
+            _combineStack.Push(new());
+        }
+
+        public IUndoableAction EndCombineAction(string name)
+        {
+            if (!_combineStack.TryPop(out var combineSet))
+                throw new Exception("Can't call EndCombineAction() before BeginCombineAction()");
+
+            var compositeAction = new CompositeUndoAction(name, combineSet);
+            return compositeAction;
+        }
+
         public void ExecuteAction(IUndoableAction action)
         {
+            if (_combineStack.TryPeek(out var combineSet))
+            {
+                combineSet.Add(action);
+                return;
+            }
+
             if (UndoActionCount < ActionStack.Count)
             {
                 // We currently have items that can be redone, remove those
