@@ -26,5 +26,8 @@ namespace Gemini.Modules.UndoRedo
         bool CanRedo { get; }
         void Redo(int actionCount);
         void RedoTo(IUndoableAction action);
+
+        void BeginCombineAction();
+        IUndoableAction EndCombineAction(string name);
     }
 }
