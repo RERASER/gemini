@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
 using Gemini.Framework.Commands;
@@ -33,5 +33,7 @@ namespace Gemini.Modules.UndoRedo.Commands
 
         [Export]
         public static CommandKeyboardShortcut KeyGesture = new CommandKeyboardShortcut<RedoCommandDefinition>(new KeyGesture(Key.Y, ModifierKeys.Control));
+        [Export]
+        public static CommandKeyboardShortcut KeyGesture2 = new CommandKeyboardShortcut<RedoCommandDefinition>(new KeyGesture(Key.Z, ModifierKeys.Control | ModifierKeys.Shift));
     }
 }
