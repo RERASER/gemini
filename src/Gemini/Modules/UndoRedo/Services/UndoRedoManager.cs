@@ -214,5 +214,11 @@ namespace Gemini.Modules.UndoRedo.Services
         {
             BatchEnd?.Invoke(this, EventArgs.Empty);
         }
+
+        public void Clear()
+        {
+            ActionStack.Clear();
+            UndoActionCount = 0;
+        }
     }
 }
