@@ -36,6 +36,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Resource Include="Resources\Icons\*.png" />
+    <None Remove="Resources\Icons\Transparent.png" />
     <EmbeddedResource Update="Properties\Resources.de.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
