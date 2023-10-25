@@ -36,7 +36,7 @@ namespace Gemini.Modules.UndoRedo.Services
 
         private int? _undoCountLimit = null;
 
-        private Stack<HashSet<IUndoableAction>> _combineStack = new();
+        private Stack<List<IUndoableAction>> _combineStack = new();
 
         public int RedoActionCount => ActionStack.Count - UndoActionCount;
 
