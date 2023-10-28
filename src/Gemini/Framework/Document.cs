@@ -27,6 +27,7 @@ namespace Gemini.Framework
 	    public IUndoRedoManager UndoRedoManager
 	    {
             get { return _undoRedoManager ?? (_undoRedoManager = new UndoRedoManager()); }
+            set { _undoRedoManager = value; }
 	    }
 
 		private ICommand _closeCommand;
