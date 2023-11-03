@@ -12,6 +12,20 @@ namespace Gemini.Framework
         public bool IsNew { get; private set; }
         public string FileName { get; private set; }
 
+        public override string DisplayName
+        {
+            get
+            {
+                var name = base.DisplayName;
+                if (string.IsNullOrWhiteSpace(name))
+                    name = string.IsNullOrWhiteSpace(FileName) ? FilePath : FileName;
+                if (IsDirty)
+                    name = "* " + name;
+                return name;
+            }
+            set => base.DisplayName = value;
+        }
+
         private string _filePath = null;
         public string FilePath
         {
@@ -20,6 +34,7 @@ namespace Gemini.Framework
             {
                 _filePath = value;
                 NotifyOfPropertyChange(() => FilePath);
+                NotifyOfPropertyChange(() => DisplayName);
                 UpdateToolTip();
             }
         }
@@ -34,7 +49,7 @@ namespace Gemini.Framework
 
                 _isDirty = value;
                 NotifyOfPropertyChange(() => IsDirty);
-                UpdateDisplayName();
+                NotifyOfPropertyChange(() => DisplayName);
             }
         }
 
@@ -62,11 +77,6 @@ namespace Gemini.Framework
             return true;
         }
 
-        private void UpdateDisplayName()
-        {
-            DisplayName = IsDirty ? FileName + "*" : FileName;
-        }
-
         private void UpdateToolTip()
         {
             ToolTip = FilePath;
@@ -74,8 +84,8 @@ namespace Gemini.Framework
 
         public async Task New(string fileName)
         {
+            FilePath = null;
             FileName = fileName;
-            UpdateDisplayName();
 
             IsNew = true;
             IsDirty = false;
@@ -89,7 +99,6 @@ namespace Gemini.Framework
         {
             FilePath = filePath;
             FileName = Path.GetFileName(filePath);
-            UpdateDisplayName();
 
             IsNew = false;
             IsDirty = false;
@@ -103,7 +112,6 @@ namespace Gemini.Framework
         {
             FilePath = filePath;
             FileName = Path.GetFileName(filePath);
-            UpdateDisplayName();
 
             await DoSave(filePath);
 
