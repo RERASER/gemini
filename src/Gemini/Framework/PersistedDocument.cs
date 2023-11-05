@@ -10,7 +10,17 @@ namespace Gemini.Framework
         private bool _isDirty;
 
         public bool IsNew { get; private set; }
-        public string FileName { get; private set; }
+
+        private string _fileName;
+        public string FileName
+        {
+            get => _fileName;
+            set
+            {
+                Set(ref _fileName, value);
+                NotifyOfPropertyChange(() => DisplayName);
+            }
+        }
 
         public override string DisplayName
         {
