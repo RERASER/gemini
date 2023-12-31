@@ -1,24 +1,26 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Globalization;
+using System.Linq;
+using System.Resources;
 using Caliburn.Micro;
+using Gemini.Framework.Services;
 using Gemini.Framework.Themes;
 using Gemini.Modules.Settings;
+using Gemini.Properties;
+using ResourceManager = System.Resources.ResourceManager;
 
 namespace Gemini.Modules.MainMenu.ViewModels
 {
-    [Export(typeof (ISettingsEditor))]
+    [Export(typeof(ISettingsEditor))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class MainMenuSettingsViewModel : PropertyChangedBase, ISettingsEditor
     {
         private readonly IThemeManager _themeManager;
 
         private readonly static List<string> _availableLanguages = new List<string> {
-            string.Empty,
-            "en",
-            "de",
-            "ru",
-            "zh-Hans",
-            "ko",
+
         };
 
         private ITheme _selectedTheme;
@@ -32,6 +34,21 @@ namespace Gemini.Modules.MainMenu.ViewModels
             SelectedTheme = themeManager.CurrentTheme;
             AutoHideMainMenu = Properties.Settings.Default.AutoHideMainMenu;
             SelectedLanguage = Properties.Settings.Default.LanguageCode;
+
+            _availableLanguages.AddRange(GetAvaliableCultureInfos().Select(x => x.Name));
+        }
+
+        private IEnumerable<CultureInfo> GetAvaliableCultureInfos()
+        {
+            var rm = new ResourceManager(typeof(Resources));
+
+            CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+            foreach (CultureInfo culture in cultures)
+            {
+                ResourceSet rs = rm.GetResourceSet(culture, true, false);
+                if (rs != null)
+                    yield return culture;
+            }
         }
 
         public IEnumerable<ITheme> Themes
@@ -44,7 +61,8 @@ namespace Gemini.Modules.MainMenu.ViewModels
             get { return _selectedTheme; }
             set
             {
-                if (value.Equals(_selectedTheme)) return;
+                if (value.Equals(_selectedTheme))
+                    return;
                 _selectedTheme = value;
                 NotifyOfPropertyChange(() => SelectedTheme);
             }
@@ -72,7 +90,8 @@ namespace Gemini.Modules.MainMenu.ViewModels
             get { return _autoHideMainMenu; }
             set
             {
-                if (value.Equals(_autoHideMainMenu)) return;
+                if (value.Equals(_autoHideMainMenu))
+                    return;
                 _autoHideMainMenu = value;
                 NotifyOfPropertyChange(() => AutoHideMainMenu);
             }
