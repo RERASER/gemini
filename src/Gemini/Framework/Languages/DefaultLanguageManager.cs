@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
@@ -14,6 +15,7 @@ using ResourceManager = System.Resources.ResourceManager;
 namespace Gemini.Framework.Languages
 {
     [Export(typeof(ILanguageManager))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     internal class DefaultLanguageManager : ILanguageManager
     {
         private List<string> cachedAvaliableLanguages;
@@ -42,6 +44,16 @@ namespace Gemini.Framework.Languages
             return Settings.Default.LanguageCode;
         }
 
+        private Dictionary<int, TranslationSource> cachedSources = new();
+
+        public INotifyPropertyChanged GetTranslationSource(Func<string, CultureInfo, string> callback)
+        {
+            var key = callback.GetHashCode();
+            if (!cachedSources.TryGetValue(key, out var source))
+                cachedSources[key] = source = new TranslationSource((key) => callback(key, Thread.CurrentThread.CurrentUICulture));
+            return source;
+        }
+
         public void SetLanguage(string languageName)
         {
             var culture = string.IsNullOrWhiteSpace(languageName) ? CultureInfo.DefaultThreadCurrentCulture : CultureInfo.GetCultureInfo(languageName);
@@ -52,6 +64,9 @@ namespace Gemini.Framework.Languages
 
             Settings.Default.LanguageCode = languageName;
             Settings.Default.Save();
+
+            foreach (var source in cachedSources.Values)
+                source.Refresh();
         }
     }
 }

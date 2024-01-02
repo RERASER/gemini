@@ -20,10 +20,7 @@ namespace Gemini.Modules.MainMenu.ViewModels
     {
         private readonly IThemeManager _themeManager;
         private readonly ILanguageManager _languageManager;
-        private readonly static List<string> _availableLanguages = new List<string>
-        {
-
-        };
+        private readonly List<string> _availableLanguages = new ();
 
         private ITheme _selectedTheme;
         private string _selectedLanguage;
@@ -103,6 +100,8 @@ namespace Gemini.Modules.MainMenu.ViewModels
             Properties.Settings.Default.ThemeName = SelectedTheme.GetType().Name;
             Properties.Settings.Default.AutoHideMainMenu = AutoHideMainMenu;
             Properties.Settings.Default.Save();
+
+            _languageManager.SetLanguage(SelectedLanguage);
         }
     }
 }

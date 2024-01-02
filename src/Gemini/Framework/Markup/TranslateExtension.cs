@@ -1,13 +1,17 @@
-using System.Windows.Markup;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Gemini.Properties;
 
 namespace Gemini.Framework.Markup
 {
-    public sealed class TranslateExtension : StaticExtension
+    public class TranslateExtension : TranslateExtensionBase
     {
-        public TranslateExtension(string member)
-            : base(member)
+        public TranslateExtension(string member) : base(member, Resources.ResourceManager.GetString)
         {
-            
         }
     }
 }
