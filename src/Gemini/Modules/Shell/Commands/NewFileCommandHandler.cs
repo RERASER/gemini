@@ -71,7 +71,7 @@ namespace Gemini.Modules.Shell.Commands
             await _shell.OpenDocumentAsync(editor);
         }
 
-        private class NewFileTag
+        public class NewFileTag
         {
             public IEditorProvider EditorProvider;
             public EditorFileType FileType;

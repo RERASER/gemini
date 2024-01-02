@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Gemini.Framework;
+using Gemini.Framework.Languages;
 using Gemini.Framework.Services;
 
 namespace Gemini

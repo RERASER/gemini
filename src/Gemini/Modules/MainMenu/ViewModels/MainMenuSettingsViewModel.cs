@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Resources;
 using Caliburn.Micro;
+using Gemini.Framework.Languages;
 using Gemini.Framework.Services;
 using Gemini.Framework.Themes;
 using Gemini.Modules.Settings;
@@ -18,8 +19,9 @@ namespace Gemini.Modules.MainMenu.ViewModels
     public class MainMenuSettingsViewModel : PropertyChangedBase, ISettingsEditor
     {
         private readonly IThemeManager _themeManager;
-
-        private readonly static List<string> _availableLanguages = new List<string> {
+        private readonly ILanguageManager _languageManager;
+        private readonly static List<string> _availableLanguages = new List<string>
+        {
 
         };
 
@@ -28,28 +30,17 @@ namespace Gemini.Modules.MainMenu.ViewModels
         private bool _autoHideMainMenu;
 
         [ImportingConstructor]
-        public MainMenuSettingsViewModel(IThemeManager themeManager)
+        public MainMenuSettingsViewModel(IThemeManager themeManager, ILanguageManager languageManager)
         {
             _themeManager = themeManager;
+            _languageManager = languageManager;
             SelectedTheme = themeManager.CurrentTheme;
             AutoHideMainMenu = Properties.Settings.Default.AutoHideMainMenu;
-            SelectedLanguage = Properties.Settings.Default.LanguageCode;
 
-            _availableLanguages.AddRange(GetAvaliableCultureInfos().Select(x => x.Name));
+            SelectedLanguage = _languageManager.GetCurrentLanguage();
+            _availableLanguages.AddRange(_languageManager.GetAvaliableLanguageNames());
         }
 
-        private IEnumerable<CultureInfo> GetAvaliableCultureInfos()
-        {
-            var rm = new ResourceManager(typeof(Resources));
-
-            CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
-            foreach (CultureInfo culture in cultures)
-            {
-                ResourceSet rs = rm.GetResourceSet(culture, true, false);
-                if (rs != null)
-                    yield return culture;
-            }
-        }
 
         public IEnumerable<ITheme> Themes
         {
@@ -111,7 +102,6 @@ namespace Gemini.Modules.MainMenu.ViewModels
         {
             Properties.Settings.Default.ThemeName = SelectedTheme.GetType().Name;
             Properties.Settings.Default.AutoHideMainMenu = AutoHideMainMenu;
-            Properties.Settings.Default.LanguageCode = SelectedLanguage;
             Properties.Settings.Default.Save();
         }
     }
