@@ -51,7 +51,6 @@ namespace Gemini.Framework.Languages
         }
 
         private readonly Dictionary<int, TranslationSource> cachedSources = new();
-        private bool isUpdating;
 
         public INotifyPropertyChanged GetTranslationSource(Func<string, CultureInfo, string> callback)
         {
@@ -74,39 +73,6 @@ namespace Gemini.Framework.Languages
 
             foreach (var source in cachedSources.Values)
                 source.Refresh();
-
-            /*
-            var visuals = new Queue<Visual>();
-            foreach (var window in Application.Current.Windows.OfType<Visual>())
-                visuals.Enqueue(window);
-
-            void UpdateBindingTargets(DependencyObject obj)
-            {
-                var localValues = obj.GetLocalValueEnumerator();
-                while (localValues.MoveNext())
-                {
-                    var entry = localValues.Current;
-
-                    if (BindingOperations.IsDataBound(obj, entry.Property))
-                    {
-                        var bindingExpr = BindingOperations.GetBindingExpression(obj, entry.Property);
-                        bindingExpr.UpdateSource();
-                    }
-                }
-            }
-
-            while (visuals.TryDequeue(out var visual))
-            {
-                UpdateBindingTargets(visual);
-
-                var childCount = VisualTreeHelper.GetChildrenCount(visual);
-                for (int i = 0; i < childCount; i++)
-                {
-                    var child = (Visual)VisualTreeHelper.GetChild(visual, i);
-                    visuals.Enqueue(child);
-                }
-            }
-            */
         }
     }
 }
