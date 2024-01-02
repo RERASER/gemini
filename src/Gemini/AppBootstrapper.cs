@@ -40,14 +40,12 @@ namespace Gemini
 
         protected virtual void PreInitialize()
         {
-            var code = Properties.Settings.Default.LanguageCode;
+            var languageName = Properties.Settings.Default.LanguageCode;
 
-            if (!string.IsNullOrWhiteSpace(code))
-            {
-                var culture = CultureInfo.GetCultureInfo(code);
-                Thread.CurrentThread.CurrentUICulture = culture;
-                Thread.CurrentThread.CurrentCulture = culture;
-            }
+            var culture = string.IsNullOrWhiteSpace(languageName) ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(languageName);
+            var uiCulture = string.IsNullOrWhiteSpace(languageName) ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(languageName);
+            Thread.CurrentThread.CurrentUICulture = uiCulture;
+            Thread.CurrentThread.CurrentCulture = culture;
         }
 
         /// <summary>

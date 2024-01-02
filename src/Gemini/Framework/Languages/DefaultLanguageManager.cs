@@ -62,8 +62,8 @@ namespace Gemini.Framework.Languages
 
         public void SetLanguage(string languageName)
         {
-            var culture = string.IsNullOrWhiteSpace(languageName) ? CultureInfo.DefaultThreadCurrentCulture : CultureInfo.GetCultureInfo(languageName);
-            var uiCulture = string.IsNullOrWhiteSpace(languageName) ? CultureInfo.DefaultThreadCurrentUICulture : CultureInfo.GetCultureInfo(languageName);
+            var culture = string.IsNullOrWhiteSpace(languageName) ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(languageName);
+            var uiCulture = string.IsNullOrWhiteSpace(languageName) ? CultureInfo.InvariantCulture : CultureInfo.GetCultureInfo(languageName);
 
             Thread.CurrentThread.CurrentUICulture = culture;
             Thread.CurrentThread.CurrentCulture = uiCulture;
