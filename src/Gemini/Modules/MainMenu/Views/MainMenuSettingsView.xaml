@@ -18,7 +18,7 @@
     </UserControl.Resources>
     <StackPanel>
         <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
-            <Label Width="100" Content="{markup:Translate p:Resources.MainMenuSettingsColorTheme}" />
+            <Label Width="100" Content="{markup:Translate [MainMenuSettingsColorTheme]}" />
             <ComboBox ItemsSource="{Binding Themes}" SelectedItem="{Binding SelectedTheme}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -28,7 +28,7 @@
             </ComboBox>
         </StackPanel>
         <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
-            <Label Width="100" Content="{markup:Translate p:Resources.MainMenuSettingsLanguage}" />
+            <Label Width="100" Content="{markup:Translate [MainMenuSettingsLanguage]}" />
             <ComboBox ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -38,11 +38,11 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Label Content="{markup:Translate p:Resources.MainMenuSettingsLanguageRestart}" />
+            <Label Content="{markup:Translate [MainMenuSettingsLanguageRestart]}" />
         </StackPanel>
         <CheckBox
             Margin="0,5,0,0"
-            Content="{markup:Translate p:Resources.MainMenuSettingsAutoHideMainMenu}"
+            Content="{markup:Translate [MainMenuSettingsAutoHideMainMenu]}"
             IsChecked="{Binding AutoHideMainMenu}" />
     </StackPanel>
 </UserControl>
