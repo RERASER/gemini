@@ -10,6 +10,7 @@
         <ResourceDictionary Source="ScrollBar.xaml" />
         <ResourceDictionary Source="Slider.xaml" />
         <ResourceDictionary Source="TextBox.xaml" />
+        <ResourceDictionary Source="TextBlock.xaml" />
         <ResourceDictionary Source="Toolbar.xaml" />
         <ResourceDictionary Source="Tooltip.xaml" />
         <ResourceDictionary Source="TreeView.xaml" />
