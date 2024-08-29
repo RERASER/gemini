@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <PackageId>GeminiWpf</PackageId>
     <Title>Gemini</Title>
@@ -51,13 +51,18 @@
     <EmbeddedResource Update="Properties\Resources.ru.resx" />
     <EmbeddedResource Update="Properties\Resources.zh-Hans.resx" />
   </ItemGroup>
-
+    
   <ItemGroup>
-    <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="3.6.2" />
     <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.78" />
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="4.7.0" Condition="$(TargetFramework) == 'net461'" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+  </ItemGroup>
+    
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Core\Caliburn.Micro.Core.csproj" />
+    <ProjectReference Include="..\..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Platform.Core\Caliburn.Micro.Platform.Core.csproj" />
+    <ProjectReference Include="..\..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Platform\Caliburn.Micro.Platform.csproj" />
   </ItemGroup>
   
 </Project>

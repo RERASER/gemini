@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.87
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini.Demo", "Gemini.Demo\Gemini.Demo.csproj", "{250E5DC8-DEE7-428E-8FE6-EAFDD70977EE}"
 EndProject
@@ -31,6 +31,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gemini.Modules.GraphEditor", "Gemini.Modules.GraphEditor\Gemini.Modules.GraphEditor.csproj", "{F8204886-1F61-4247-B7B2-EA5E518162F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{87C5CCCC-7448-4802-B35F-C0BEA3FF880D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependences", "Dependences", "{8EF31AC0-0AFE-4337-8A05-2A54872F56A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliburn.Micro.Core", "..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Core\Caliburn.Micro.Core.csproj", "{2CB601C2-5705-4F76-96F4-73BE431DE29B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caliburn.Micro.Platform.Core", "..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Platform.Core\Caliburn.Micro.Platform.Core.csproj", "{10B814E7-C646-4208-AF47-D3C903C8CA45}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caliburn.Micro.Platform", "..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Platform\Caliburn.Micro.Platform.csproj", "{B79B1928-6202-4EC1-9311-681EB03220E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,12 +82,27 @@ Global
 		{F8204886-1F61-4247-B7B2-EA5E518162F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8204886-1F61-4247-B7B2-EA5E518162F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8204886-1F61-4247-B7B2-EA5E518162F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CB601C2-5705-4F76-96F4-73BE431DE29B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CB601C2-5705-4F76-96F4-73BE431DE29B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CB601C2-5705-4F76-96F4-73BE431DE29B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CB601C2-5705-4F76-96F4-73BE431DE29B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B814E7-C646-4208-AF47-D3C903C8CA45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B814E7-C646-4208-AF47-D3C903C8CA45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B814E7-C646-4208-AF47-D3C903C8CA45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B814E7-C646-4208-AF47-D3C903C8CA45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B79B1928-6202-4EC1-9311-681EB03220E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79B1928-6202-4EC1-9311-681EB03220E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B79B1928-6202-4EC1-9311-681EB03220E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B79B1928-6202-4EC1-9311-681EB03220E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{250E5DC8-DEE7-428E-8FE6-EAFDD70977EE} = {87C5CCCC-7448-4802-B35F-C0BEA3FF880D}
+		{2CB601C2-5705-4F76-96F4-73BE431DE29B} = {8EF31AC0-0AFE-4337-8A05-2A54872F56A2}
+		{10B814E7-C646-4208-AF47-D3C903C8CA45} = {8EF31AC0-0AFE-4337-8A05-2A54872F56A2}
+		{B79B1928-6202-4EC1-9311-681EB03220E3} = {8EF31AC0-0AFE-4337-8A05-2A54872F56A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C029961-F2EC-49C8-997C-35C6469CF7B5}
