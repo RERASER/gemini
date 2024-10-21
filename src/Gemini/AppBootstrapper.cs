@@ -93,11 +93,31 @@ namespace Gemini
             string currentWorkingDir = Path.GetDirectoryName(Path.GetFullPath(@"./"));
             string baseDirectory = Path.GetDirectoryName(Path.GetFullPath(AppContext.BaseDirectory));
 
-            // Add all assemblies to AssemblySource (using a temporary DirectoryCatalog).
-            PopulateAssemblySourceUsingDirectoryCatalog(currentWorkingDir);
+            // Add all assemblies to AssemblySource (using a temporary AssemblyCatalog).
+
+            foreach (var item in System.IO.Directory.EnumerateFiles(currentWorkingDir, "*.dll",new EnumerationOptions() { RecurseSubdirectories = true}).Where((str) => { return !str.Contains("Vortice"); }))
+            {
+                try
+                {
+                    PopulateAssemblySourceUsingAssemblyCatalog(item);
+                }
+                catch (BadImageFormatException)
+                {
+                }
+            }
+            
             if (currentWorkingDir != baseDirectory)
             {
-                PopulateAssemblySourceUsingDirectoryCatalog(baseDirectory);
+                foreach (var item in System.IO.Directory.EnumerateFiles(baseDirectory, "*.dll", new EnumerationOptions() { RecurseSubdirectories = true }).Where((str) => { return !str.Contains("Vortice"); }))
+                {
+                    try
+                    {
+                        PopulateAssemblySourceUsingAssemblyCatalog(item);
+                    }
+                    catch (BadImageFormatException)
+                    {
+                    }
+                }
             }
 
             // Prioritise the executable assembly. This allows the client project to override exports, including IShell.
@@ -130,6 +150,15 @@ namespace Gemini
             var directoryCatalog = new DirectoryCatalog(path);
             AssemblySource.Instance.AddRange(
                 directoryCatalog.Parts
+                    .Select(part => ReflectionModelServices.GetPartType(part).Value.Assembly)
+                    .Where(assembly => !AssemblySource.Instance.Contains(assembly)));
+        }
+
+        protected void PopulateAssemblySourceUsingAssemblyCatalog(string path)
+        {
+            var assemblyCatalog = new AssemblyCatalog(path);
+            AssemblySource.Instance.AddRange(
+                assemblyCatalog.Parts
                     .Select(part => ReflectionModelServices.GetPartType(part).Value.Assembly)
                     .Where(assembly => !AssemblySource.Instance.Contains(assembly)));
         }
