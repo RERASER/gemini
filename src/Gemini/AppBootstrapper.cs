@@ -163,11 +163,17 @@ namespace Gemini
 
         protected void PopulateAssemblySourceUsingAssemblyCatalog(string path)
         {
-            var assemblyCatalog = new AssemblyCatalog(path);
-            AssemblySource.Instance.AddRange(
-                assemblyCatalog.Parts
-                    .Select(part => ReflectionModelServices.GetPartType(part).Value.Assembly)
-                    .Where(assembly => !AssemblySource.Instance.Contains(assembly)));
+            try
+            {
+                var assemblyCatalog = new AssemblyCatalog(path);
+                AssemblySource.Instance.AddRange(
+                    assemblyCatalog.Parts
+                        .Select(part => ReflectionModelServices.GetPartType(part).Value.Assembly)
+                        .Where(assembly => !AssemblySource.Instance.Contains(assembly)));
+            }
+            catch (BadImageFormatException)
+            {
+            }
         }
 
         /// <summary>
