@@ -92,12 +92,39 @@ namespace Gemini
             // See https://docs.microsoft.com/en-us/dotnet/core/deploying/single-file#other-considerations
             string currentWorkingDir = Path.GetDirectoryName(Path.GetFullPath(@"./"));
             string baseDirectory = Path.GetDirectoryName(Path.GetFullPath(AppContext.BaseDirectory));
+            IReadOnlyList<string> blacklist = ["Vortice", "Microsoft.Build", "Microsoft.CodeAnalysis", "System.Text.Json"];
+            foreach (var item in System.IO.Directory.EnumerateFiles(currentWorkingDir, "*.dll", SearchOption.AllDirectories).Where((str) =>
+            {
+                foreach (var item1 in blacklist)
+                {
+                    if (str.Contains(item1))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }))
+            {
+                PopulateAssemblySourceUsingAssemblyCatalog(item);
+            }
 
-            // Add all assemblies to AssemblySource (using a temporary DirectoryCatalog).
-            PopulateAssemblySourceUsingDirectoryCatalog(currentWorkingDir);
+                // Add all assemblies to AssemblySource (using a temporary DirectoryCatalog).
             if (currentWorkingDir != baseDirectory)
             {
-                PopulateAssemblySourceUsingDirectoryCatalog(baseDirectory);
+                foreach (var item in System.IO.Directory.EnumerateFiles(baseDirectory, "*.dll", SearchOption.AllDirectories).Where((str) =>
+                {
+                    foreach (var item1 in blacklist)
+                    {
+                        if (str.Contains(item1))
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }))
+                {
+                    PopulateAssemblySourceUsingAssemblyCatalog(item);
+                }
             }
 
             // Prioritise the executable assembly. This allows the client project to override exports, including IShell.
@@ -130,6 +157,15 @@ namespace Gemini
             var directoryCatalog = new DirectoryCatalog(path);
             AssemblySource.Instance.AddRange(
                 directoryCatalog.Parts
+                    .Select(part => ReflectionModelServices.GetPartType(part).Value.Assembly)
+                    .Where(assembly => !AssemblySource.Instance.Contains(assembly)));
+        }
+
+        protected void PopulateAssemblySourceUsingAssemblyCatalog(string path)
+        {
+            var assemblyCatalog = new AssemblyCatalog(path);
+            AssemblySource.Instance.AddRange(
+                assemblyCatalog.Parts
                     .Select(part => ReflectionModelServices.GetPartType(part).Value.Assembly)
                     .Where(assembly => !AssemblySource.Instance.Contains(assembly)));
         }
