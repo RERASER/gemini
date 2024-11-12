@@ -53,16 +53,21 @@
   </ItemGroup>
     
   <ItemGroup>
-    <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="3.6.2" />
-    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.78" />
-    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="5.0.0" />
+    <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.72.1" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.115" />
+    <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0513" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.0-rc.2.24473.5" />
   </ItemGroup>
     
   <ItemGroup>
     <ProjectReference Include="..\..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Core\Caliburn.Micro.Core.csproj" />
     <ProjectReference Include="..\..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Platform.Core\Caliburn.Micro.Platform.Core.csproj" />
     <ProjectReference Include="..\..\Dependences\Caliburn.Micro\src\Caliburn.Micro.Platform\Caliburn.Micro.Platform.csproj" />
+  </ItemGroup>
+    
+  <ItemGroup>
+    <PackageReference Update="Nerdbank.GitVersioning" Version="3.7.77-alpha" />
   </ItemGroup>
   
 </Project>
