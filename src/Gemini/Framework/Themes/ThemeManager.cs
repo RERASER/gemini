@@ -19,8 +19,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using Gemini.Framework.Services;
+using Gemini.Framework.Win32;
 
 namespace Gemini.Framework.Themes
 {
@@ -28,6 +32,7 @@ namespace Gemini.Framework.Themes
     public class ThemeManager : IThemeManager
     {
         public event EventHandler CurrentThemeChanged;
+        public event EventHandler<IThemeManager.SystemTheme> CurrentSystemThemeChanged;
 
         private readonly SettingsPropertyChangedEventManager<Properties.Settings> _settingsEventManager =
             new SettingsPropertyChangedEventManager<Properties.Settings>(Properties.Settings.Default);
@@ -41,16 +46,59 @@ namespace Gemini.Framework.Themes
 
         public ITheme CurrentTheme { get; private set; }
 
+        public IThemeManager.SystemTheme CurrentSystemTheme { get; private set; }
+
+        private bool isSystemTheme;
+
         [ImportingConstructor]
         public ThemeManager([ImportMany] ITheme[] themes)
         {
             Themes = new List<ITheme>(themes);
-            _settingsEventManager.AddListener(s => s.ThemeName, value => SetCurrentTheme(value));
+            //_settingsEventManager.AddListener(s => s.ThemeName, value => SetCurrentTheme(value));
+            CurrentSystemTheme = ReadSystemTheme();
+            Thread thread = new(SystemThemeListenThread);
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        private void SetSystemTheme(object sender, IThemeManager.SystemTheme theme)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SetCurrentTheme("SystemTheme");
+            });
         }
 
         public bool SetCurrentTheme(string name)
         {
+            var realname = name;
+            if (name == "SystemTheme")
+            {
+                if (!isSystemTheme)
+                {
+                    CurrentSystemThemeChanged += SetSystemTheme;
+                }
+                switch (CurrentSystemTheme)
+                {
+                    case IThemeManager.SystemTheme.Light:
+                        name = "LightTheme";
+                        break;
+                    case IThemeManager.SystemTheme.Dark:
+                        name = "DarkTheme";
+                        break;
+                    default:
+                        return false;
+                }
+            }
+            else
+            {
+                if (isSystemTheme)
+                {
+                    CurrentSystemThemeChanged -= SetSystemTheme;
+                }
+            }
             var theme = Themes.FirstOrDefault(x => x.GetType().Name == name);
+            var realtheme = Themes.FirstOrDefault(x => x.GetType().Name == realname);
             if (theme == null)
                 return false;
 
@@ -58,7 +106,7 @@ namespace Gemini.Framework.Themes
             if (mainWindow == null)
                 return false;
 
-            CurrentTheme = theme;
+            CurrentTheme = realtheme;
 
             if (_applicationResourceDictionary == null)
             {
@@ -97,6 +145,70 @@ namespace Gemini.Framework.Themes
             var handler = CurrentThemeChanged;
             if (handler != null)
                 handler(this, args);
+        }
+
+        public static IThemeManager.SystemTheme ReadSystemTheme()
+        {
+            IntPtr subKeyName = Marshal.StringToCoTaskMemAnsi("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+            IntPtr hKeyRef = Marshal.AllocCoTaskMem(8);
+            int hr = NativeMethods.RegOpenKeyExA(NativeMethods.HKEY_CURRENT_USER, subKeyName, 0, NativeMethods.KEY_READ, hKeyRef);
+            Marshal.FreeCoTaskMem(subKeyName);
+            if (hr != 0)
+            {
+                Marshal.FreeCoTaskMem(hKeyRef);
+                return IThemeManager.SystemTheme.Light;
+            }
+            IntPtr hKey = Marshal.ReadIntPtr(hKeyRef);
+            Marshal.FreeCoTaskMem(hKeyRef);
+            subKeyName = Marshal.StringToCoTaskMemAnsi("AppsUseLightTheme");
+            IntPtr dwSizeRef = Marshal.AllocCoTaskMem(4);
+            IntPtr valueRef = Marshal.AllocCoTaskMem(4);
+            Marshal.WriteInt32(dwSizeRef, 4);
+            NativeMethods.RegQueryValueExA(hKey, subKeyName, IntPtr.Zero, IntPtr.Zero, valueRef, dwSizeRef);
+            Marshal.FreeCoTaskMem(subKeyName);
+            Marshal.FreeCoTaskMem(dwSizeRef);
+            int value = Marshal.ReadInt32(valueRef);
+            Marshal.FreeCoTaskMem(valueRef);
+            NativeMethods.RegCloseKey(hKey);
+            return value > 0 ? IThemeManager.SystemTheme.Light : IThemeManager.SystemTheme.Dark;
+        }
+
+        private void SystemThemeListenThread()
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            Application.Current.Dispatcher.Invoke(() => { Application.Current.Exit += (o, e) => { cts.Cancel(); }; });
+            IntPtr subKeyName = Marshal.StringToCoTaskMemAnsi("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+            IntPtr hKeyRef = Marshal.AllocCoTaskMem(8);
+            int hr = NativeMethods.RegOpenKeyExA(NativeMethods.HKEY_CURRENT_USER, subKeyName, 0, NativeMethods.KEY_READ, hKeyRef);
+            Marshal.FreeCoTaskMem(subKeyName);
+            if (hr != 0)
+            {
+                Marshal.FreeCoTaskMem(hKeyRef);
+                return;
+            }
+            IntPtr hKey = Marshal.ReadIntPtr(hKeyRef);
+            Marshal.FreeCoTaskMem(hKeyRef);
+            subKeyName = Marshal.StringToCoTaskMemAnsi("AppsUseLightTheme");
+            IntPtr dwSizeRef = Marshal.AllocCoTaskMem(4);
+            IntPtr valueRef = Marshal.AllocCoTaskMem(4);
+            Marshal.WriteInt32(dwSizeRef, 4);
+            while (true)
+            {
+                NativeMethods.RegNotifyChangeKeyValue(hKey, 1, 0x00000004, IntPtr.Zero, 0);
+                NativeMethods.RegQueryValueExA(hKey, subKeyName, IntPtr.Zero, IntPtr.Zero, valueRef, dwSizeRef);
+                int value = Marshal.ReadInt32(valueRef);
+                IThemeManager.SystemTheme result = value > 0 ? IThemeManager.SystemTheme.Light : IThemeManager.SystemTheme.Dark;
+                CurrentSystemTheme = result;
+                if (cts.Token.IsCancellationRequested)
+                {
+                    break;
+                }
+                CurrentSystemThemeChanged?.Invoke(this, result);
+            }
+            Marshal.FreeCoTaskMem(subKeyName);
+            Marshal.FreeCoTaskMem(dwSizeRef);
+            Marshal.FreeCoTaskMem(valueRef);
+            NativeMethods.RegCloseKey(hKey);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Gemini.Framework.Win32
 {
-    internal static class NativeMethods
+    internal static partial class NativeMethods
     {
         #region Constants
 
@@ -52,6 +52,11 @@ namespace Gemini.Framework.Win32
 
         // Define the TME_LEAVE value so we can register for WM_MOUSELEAVE messages
         public const uint TME_LEAVE = 0x00000002;
+
+        public const UIntPtr HKEY_CURRENT_USER = 0x80000001;
+        public const uint KEY_NOTIFY = 0x0010;
+        public const uint REG_NOTIFY_CHANGE_LAST_SET = 0x00000004;
+        public const uint KEY_READ = ((0x00020000) | (0x0001) | (0x0008) | (0x0010)) & (~0x00100000);
 
         #endregion
 
@@ -168,6 +173,15 @@ namespace Gemini.Framework.Win32
 
         [DllImport("user32.dll")]
         public static extern int ShowCursor(bool bShow);
+
+        [LibraryImport("Advapi32.dll")]
+        public static partial int RegOpenKeyExA(UIntPtr hKey, IntPtr lpSubKey, uint ulOptions, uint samDesired, IntPtr phkResult);
+        [LibraryImport("Advapi32.dll")]
+        public static partial int RegQueryValueExA(IntPtr hKey, IntPtr lpValueName, IntPtr lpReserved, IntPtr lpType, IntPtr lpData, IntPtr lpcbData);
+        [LibraryImport("Advapi32.dll")]
+        public static partial int RegNotifyChangeKeyValue(IntPtr hKey, uint bWatchSubtree, uint dwNotifyFilter, IntPtr hEvent, uint fAsynchronous);
+        [LibraryImport("Advapi32.dll")]
+        public static partial int RegCloseKey(IntPtr hKey);
 
         #endregion
 

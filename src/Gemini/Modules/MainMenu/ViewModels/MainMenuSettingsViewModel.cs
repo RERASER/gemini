@@ -100,7 +100,7 @@ namespace Gemini.Modules.MainMenu.ViewModels
             Properties.Settings.Default.ThemeName = SelectedTheme.GetType().Name;
             Properties.Settings.Default.AutoHideMainMenu = AutoHideMainMenu;
             Properties.Settings.Default.Save();
-
+            _themeManager.SetCurrentTheme(Properties.Settings.Default.ThemeName);
             _languageManager.SetLanguage(SelectedLanguage);
         }
     }

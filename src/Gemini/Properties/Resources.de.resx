@@ -198,6 +198,15 @@
   <data name="SettingsPathEnvironment" xml:space="preserve">
     <value>Umgebung</value>
   </data>
+  <data name="ToolBarStandard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="ToolboxCategory" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="ToolboxDisplayName" xml:space="preserve">
+    <value>Werkzeuge</value>
+  </data>
   <data name="ToolsMenuText" xml:space="preserve">
     <value>_Werkzeuge</value>
   </data>
@@ -224,15 +233,6 @@
   </data>
   <data name="WindowMenuText" xml:space="preserve">
     <value>_Fenster</value>
-  </data>
-  <data name="ToolBarStandard" xml:space="preserve">
-    <value>Standard</value>
-  </data>
-  <data name="ToolboxCategory" xml:space="preserve">
-    <value>Kategorie</value>
-  </data>
-  <data name="ToolboxDisplayName" xml:space="preserve">
-    <value>Werkzeuge</value>
   </data>
   <data name="MainMenuSettingsLanguage" xml:space="preserve">
     <value>Sprache (Language):</value>

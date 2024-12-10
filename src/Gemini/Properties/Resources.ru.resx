@@ -252,12 +252,6 @@
   <data name="ThemeDarkName" xml:space="preserve">
     <value>Тёмная</value>
   </data>
-  <data name="ViewFullScreenCommandText" xml:space="preserve">
-    <value>Во весь экран</value>
-  </data>
-  <data name="ViewFullScreenCommandToolTip" xml:space="preserve">
-    <value>Во весь экран</value>
-  </data>
   <data name="FileRecentFilesCommandText" xml:space="preserve">
     <value>Последние файлы</value>
   </data>
@@ -279,10 +273,16 @@
   <data name="AllFiles" xml:space="preserve">
     <value>Все файлы</value>
   </data>
+  <data name="FileNewCommandToolTip" xml:space="preserve">
+    <value>Новый</value>
+  </data>
   <data name="SaveChangesBeforeClosingMessage" xml:space="preserve">
     <value>Сохранить изменения в {0} "{1}" перед закрытием?</value>
   </data>
-  <data name="FileNewCommandToolTip" xml:space="preserve">
-    <value>Новый</value>
+  <data name="ViewFullScreenCommandText" xml:space="preserve">
+    <value>Во весь экран</value>
+  </data>
+  <data name="ViewFullScreenCommandToolTip" xml:space="preserve">
+    <value>Во весь экран</value>
   </data>
 </root>

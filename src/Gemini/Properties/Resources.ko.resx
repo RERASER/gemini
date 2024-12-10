@@ -159,12 +159,6 @@
   <data name="FileOpenCommandToolTip" xml:space="preserve">
     <value>열기</value>
   </data>
-  <data name="FileRecentFilesCommandText" xml:space="preserve">
-    <value>최근에 사용한 파일</value>
-  </data>
-  <data name="FileRecentFilesCommandToolTip" xml:space="preserve">
-    <value>최근에 사용한 파일</value>
-  </data>
   <data name="FileSaveAsCommandText" xml:space="preserve">
     <value>다른 이름으로 저장(_A)</value>
   </data>
@@ -258,23 +252,29 @@
   <data name="ThemeDarkName" xml:space="preserve">
     <value>어둡게</value>
   </data>
+  <data name="FileRecentFilesCommandText" xml:space="preserve">
+    <value>최근에 사용한 파일</value>
+  </data>
+  <data name="FileRecentFilesCommandToolTip" xml:space="preserve">
+    <value>최근에 사용한 파일</value>
+  </data>
   <data name="FileSaveAllCommandText" xml:space="preserve">
     <value>모두 저장</value>
   </data>
   <data name="FileSaveAllCommandToolTip" xml:space="preserve">
     <value>모두 저장</value>
   </data>
+  <data name="AllSupportedFiles" xml:space="preserve">
+    <value>지원되는 모든 파일</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>모든 파일</value>
+  </data>
   <data name="FileNewCommandToolTip" xml:space="preserve">
     <value>새로 만들기</value>
   </data>
   <data name="SaveChangesBeforeClosingMessage" xml:space="preserve">
     <value>변경 내용을 "{1}" {0}에 저장하시겠습니까?</value>
-  </data>
-  <data name="AllFiles" xml:space="preserve">
-    <value>모든 파일</value>
-  </data>
-  <data name="AllSupportedFiles" xml:space="preserve">
-    <value>지원되는 모든 파일</value>
   </data>
   <data name="ViewFullScreenCommandText" xml:space="preserve">
     <value>전체화면</value>

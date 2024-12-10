@@ -17,25 +17,32 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 
 namespace Gemini.Framework.Themes
 {
-    public interface IThemeManager
+    [Export(typeof(ITheme))]
+    public class SystemTheme : ITheme
     {
-        public enum SystemTheme
+        public virtual string Name
         {
-            Light,
-            Dark,
+            get { return Properties.Resources.ThemeSystemName; }
         }
 
-        event EventHandler CurrentThemeChanged;
+        public virtual IEnumerable<Uri> ApplicationResources
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        event EventHandler<SystemTheme> CurrentSystemThemeChanged;
-
-        List<ITheme> Themes { get; }
-        ITheme CurrentTheme { get; }
-        SystemTheme CurrentSystemTheme { get; }
-
-        bool SetCurrentTheme(string name);
+        public virtual IEnumerable<Uri> MainWindowResources
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }
